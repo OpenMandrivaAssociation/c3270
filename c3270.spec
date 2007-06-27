@@ -1,20 +1,18 @@
-%define	pversion	332p2
-
 Summary:	Curses-based 3270 Emulator
 Name:		c3270
-Version: 3.3.2p2
-Release: 	%mkrel 4
+Version: 3.3.6
+Release: 	%mkrel 1
 License:	GPL
 Group:		Terminals
 URL:		http://www.geocities.com/SiliconValley/Peaks/7814/
-Source0:	c3270-%{pversion}.tar.bz2
-Requires:	x3270 =< %{version}
+Source0:	c3270-%{version}.tgz
+Requires:	x3270 <= %{version}
 Requires:	readline
 BuildRequires:	XFree86-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	libtermcap-devel
-BuildRoot:	%{_tmppath}/%{name}-%{pversion}-root
+BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 Complete IBM 3278/3279 emulation, TN3270E support, structured
