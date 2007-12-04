@@ -8,7 +8,7 @@ URL:		http://www.geocities.com/SiliconValley/Peaks/7814/
 Source0:	c3270-%{version}.tgz
 Requires:	x3270 <= %{version}
 Requires:	readline
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	libtermcap-devel
