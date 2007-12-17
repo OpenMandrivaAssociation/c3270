@@ -12,7 +12,6 @@ BuildRequires:	X11-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	libtermcap-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}-root
 
 %description
 Complete IBM 3278/3279 emulation, TN3270E support, structured
