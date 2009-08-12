@@ -1,7 +1,7 @@
 Summary:	Curses-based 3270 Emulator
 Name:		c3270
 Version:	3.3.9ga12
-Release: 	%mkrel 1
+Release: 	%mkrel 2
 License:	GPL
 Group:		Terminals
 URL:		http://www.geocities.com/SiliconValley/Peaks/7814/
@@ -25,11 +25,16 @@ fields, color xterm emulation, highly configurable
 %configure2_5x \
     --without-pr3287 
 
-%make %{name}
+%make
 
 %install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 %makeinstall_std
+
+rm -f %buildroot%_bindir/x3270if
+
+install -d %{buildroot}%{_mandir}/man1
+install -m644 %{name}.man %{buildroot}%{_mandir}/man1/%{name}.1
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -38,4 +43,5 @@ fields, color xterm emulation, highly configurable
 %defattr(-,root,root)
 %doc html/*.html README
 %{_sysconfdir}/x3270/ibm_hosts
-%{_bindir}/*
+%{_bindir}/%{name}
+%{_mandir}/man1/%{name}*
