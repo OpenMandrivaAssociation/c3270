@@ -1,0 +1,311 @@
+diff -Naur --exclude '*~' c3270-3.3/c3270.c c3270-3.3-fix-format-errors/c3270.c
+--- c3270-3.3/c3270.c	2007-06-23 15:09:31.000000000 +0200
++++ c3270-3.3-fix-format-errors/c3270.c	2009-03-16 23:08:47.000000000 +0100
+@@ -941,7 +941,7 @@
+ 			for (i = 0; c[i].name; i++) {
+ 				if (i && !(i % 4)) {
+ 					*s = '\0';
+-					action_output(buf);
++					action_output("%s", buf);
+ 					s = buf;
+ 				}
+ 				s += sprintf(s, "  %s %s", c[i].name,
+diff -Naur --exclude '*~' c3270-3.3/child.c c3270-3.3-fix-format-errors/child.c
+--- c3270-3.3/child.c	2002-12-05 04:35:47.000000000 +0100
++++ c3270-3.3-fix-format-errors/child.c	2009-03-16 23:13:23.000000000 +0100
+@@ -159,7 +159,7 @@
+ 				p->count = CHILD_BUF - 1;
+ 			child_dump(p, True);
+ 		} else {
+-			popup_an_error(exitmsg);
++			popup_an_error("%s", exitmsg);
+ 		}
+ 		return;
+ 	}
+diff -Naur --exclude '*~' c3270-3.3/ctlr.c c3270-3.3-fix-format-errors/ctlr.c
+--- c3270-3.3/ctlr.c	2007-06-20 17:30:05.000000000 +0200
++++ c3270-3.3-fix-format-errors/ctlr.c	2009-03-16 23:15:48.000000000 +0100
+@@ -660,11 +660,11 @@
+ 		if (!IN_SSCP) {
+ 			space3270out(3);
+ 			*obptr++ = aid_byte;
+-			trace_ds(see_aid(aid_byte));
++			trace_ds("%s", see_aid(aid_byte));
+ 			if (short_read)
+ 			    goto rm_done;
+ 			ENCODE_BADDR(obptr, cursor_addr);
+-			trace_ds(rcba(cursor_addr));
++			trace_ds("%s", rcba(cursor_addr));
+ 		} else {
+ 			space3270out(1);	/* just in case */
+ 		}
+@@ -756,7 +756,7 @@
+ 				*obptr++ = ea_buf[baddr].cc;
+ 				if (!any)
+ 					trace_ds("'");
+-				trace_ds(see_ebc(ea_buf[baddr].cc));
++				trace_ds("%s", see_ebc(ea_buf[baddr].cc));
+ 				any = True;
+ 				nbytes++;
+ 			}
+@@ -1136,7 +1136,7 @@
+ 			ctlr_add_bg(buffer_addr, 0); \
+ 			ctlr_add_gr(buffer_addr, 0); \
+ 			ctlr_add_ic(buffer_addr, 0); \
+-			trace_ds(see_attr(fa)); \
++			trace_ds("%s", see_attr(fa)); \
+ 			formatted = True; \
+ 		}
+ 
+@@ -1206,7 +1206,7 @@
+ 		case ORDER_SF:	/* start field */
+ 			END_TEXT("StartField");
+ 			if (previous != SBA)
+-				trace_ds(rcba(buffer_addr));
++				trace_ds("%s", rcba(buffer_addr));
+ 			previous = ORDER;
+ 			cp++;		/* skip field attribute */
+ 			START_FIELD(*cp);
+@@ -1221,7 +1221,7 @@
+ 			buffer_addr = DECODE_BADDR(*(cp-1), *cp);
+ 			END_TEXT("SetBufferAddress");
+ 			previous = SBA;
+-			trace_ds(rcba(buffer_addr));
++			trace_ds("%s", rcba(buffer_addr));
+ 			if (buffer_addr >= COLS * ROWS) {
+ 				ABORT_WRITE("invalid SBA address");
+ 			}
+@@ -1232,7 +1232,7 @@
+ 		case ORDER_IC:	/* insert cursor */
+ 			END_TEXT("InsertCursor");
+ 			if (previous != SBA)
+-				trace_ds(rcba(buffer_addr));
++				trace_ds("%s", rcba(buffer_addr));
+ 			previous = ORDER;
+ 			cursor_move(buffer_addr);
+ 			last_cmd = True;
+@@ -1290,7 +1290,7 @@
+ 			END_TEXT("RepeatToAddress");
+ 			cp += 2;	/* skip buffer address */
+ 			baddr = DECODE_BADDR(*(cp-1), *cp);
+-			trace_ds(rcba(baddr));
++			trace_ds("%s", rcba(baddr));
+ 			cp++;		/* skip char to repeat */
+ 			add_dbcs = False;
+ 			ra_ge = False;
+@@ -1394,7 +1394,7 @@
+ 			baddr = DECODE_BADDR(*(cp-1), *cp);
+ 			END_TEXT("EraseUnprotectedAll");
+ 			if (previous != SBA)
+-				trace_ds(rcba(baddr));
++				trace_ds("%s", rcba(baddr));
+ 			previous = ORDER;
+ 			if (baddr >= COLS * ROWS) {
+ 				ABORT_WRITE("invalid EUA address");
+@@ -1443,7 +1443,7 @@
+ 		case ORDER_MF:	/* modify field */
+ 			END_TEXT("ModifyField");
+ 			if (previous != SBA)
+-				trace_ds(rcba(buffer_addr));
++				trace_ds("%s", rcba(buffer_addr));
+ 			previous = ORDER;
+ 			cp++;
+ 			na = *cp;
+@@ -1455,7 +1455,7 @@
+ 						cp++;
+ 						ctlr_add_fa(buffer_addr, *cp,
+ 							ea_buf[buffer_addr].cs);
+-						trace_ds(see_attr(*cp));
++						trace_ds("%s", see_attr(*cp));
+ 					} else if (*cp == XA_FOREGROUND) {
+ 						trace_ds("%s",
+ 						    see_efa(*cp,
+@@ -1514,7 +1514,7 @@
+ 		case ORDER_SFE:	/* start field extended */
+ 			END_TEXT("StartFieldExtended");
+ 			if (previous != SBA)
+-				trace_ds(rcba(buffer_addr));
++				trace_ds("%s", rcba(buffer_addr));
+ 			previous = ORDER;
+ 			cp++;	/* skip order */
+ 			na = *cp;
+diff -Naur --exclude '*~' c3270-3.3/ft.c c3270-3.3-fix-format-errors/ft.c
+--- c3270-3.3/ft.c	2007-04-29 23:33:32.000000000 +0200
++++ c3270-3.3-fix-format-errors/ft.c	2009-03-16 23:14:26.000000000 +0100
+@@ -1440,7 +1440,7 @@
+ 			if (s > msg_copy)
+ 				*s = '\n';	/* yikes! */
+ 		}
+-		popup_an_error(msg_copy);
++		popup_an_error("%s", msg_copy);
+ 		Free(msg_copy);
+ 	} else {
+ 		struct timeval t1;
+@@ -1884,7 +1884,7 @@
+ 	flen = kybd_prime();
+ 	if (!flen || flen < strlen(cmd) - 1) {
+ 		Free(cmd);
+-		popup_an_error(get_message("ftUnable"));
++		popup_an_error("%s", get_message("ftUnable"));
+ 		return;
+ 	}
+ 	(void) emulate_input(cmd, strlen(cmd), False);
+diff -Naur --exclude '*~' c3270-3.3/glue.c c3270-3.3-fix-format-errors/glue.c
+--- c3270-3.3/glue.c	2007-06-23 21:31:45.000000000 +0200
++++ c3270-3.3-fix-format-errors/glue.c	2009-03-16 23:17:33.000000000 +0100
+@@ -1150,7 +1150,7 @@
+ 	if (errn > 0)
+ 		popup_an_error("%s:\n%s", s, strerror(errn));
+ 	else
+-		popup_an_error(s);
++		popup_an_error("%s", s);
+ 	Free(s);
+ }
+ 
+diff -Naur --exclude '*~' c3270-3.3/help.c c3270-3.3-fix-format-errors/help.c
+--- c3270-3.3/help.c	2007-04-29 23:37:19.000000000 +0200
++++ c3270-3.3-fix-format-errors/help.c	2009-03-16 23:16:32.000000000 +0100
+@@ -256,7 +256,7 @@
+ 			}
+ 		}
+ 		if (help_subcommand[overall].text != CN) {
+-			action_output(help_subcommand[overall].text);
++			action_output("%s", help_subcommand[overall].text);
+ 			return;
+ 		}
+ 		if (help_subcommand[overall].block != NULL) {
+@@ -265,7 +265,7 @@
+ 			for (j = 0;
+ 			     help_subcommand[overall].block[j] != CN;
+ 			     j++) {
+-				action_output(help_subcommand[overall].block[j]);
++				action_output("%s", help_subcommand[overall].block[j]);
+ 			}
+ 			return;
+ 		}
+diff -Naur --exclude '*~' c3270-3.3/macros.c c3270-3.3-fix-format-errors/macros.c
+--- c3270-3.3/macros.c	2007-02-17 23:44:50.000000000 +0100
++++ c3270-3.3-fix-format-errors/macros.c	2009-03-16 23:20:05.000000000 +0100
+@@ -974,7 +974,7 @@
+ 		return EM_CONTINUE;
+ 
+     failure:
+-	popup_an_error(fail_text[failreason-1]);
++	popup_an_error("%s", fail_text[failreason-1]);
+ 	return EM_ERROR;
+ #undef fail
+ #undef free_params
+@@ -1859,7 +1859,7 @@
+ 						     strlen(r.buf + 1));
+ 					(void) write(fd, "\n", 1);
+ 				} else
+-					action_output(r.buf + 1);
++					action_output("%s", r.buf + 1);
+ 			}
+ 			rpf_reset(&r);
+ 		}
+@@ -1934,7 +1934,7 @@
+ 		(void) write(fd, r.buf + 1, strlen(r.buf + 1));
+ 		(void) write(fd, "\n", 1);
+ 	} else
+-		action_output(r.buf + 1);
++		action_output("%s", r.buf + 1);
+ 	rpf_free(&r);
+ }
+ 
+diff -Naur --exclude '*~' c3270-3.3/print.c c3270-3.3-fix-format-errors/print.c
+--- c3270-3.3/print.c	2007-02-17 23:44:51.000000000 +0100
++++ c3270-3.3-fix-format-errors/print.c	2009-03-16 23:23:59.000000000 +0100
+@@ -550,7 +550,7 @@
+ 
+ 			rewind(f);
+ 			while (fgets(buf, sizeof(buf), f) != NULL)
+-				action_output(buf);
++				action_output("%s", buf);
+ 		}
+ 		if (use_file)
+ 			fclose(f);
+diff -Naur --exclude '*~' c3270-3.3/printer.c c3270-3.3-fix-format-errors/printer.c
+--- c3270-3.3/printer.c	2007-05-02 19:22:45.000000000 +0200
++++ c3270-3.3-fix-format-errors/printer.c	2009-03-16 23:28:56.000000000 +0100
+@@ -264,7 +264,7 @@
+ 		int i;
+ 
+ 		if (f == NULL) {
+-		    popup_an_errno(errno, charset_file);
++		    popup_an_errno(errno, "%s", charset_file);
+ 		    Free(cmd_text);
+ 		    return;
+ 		}
+@@ -426,7 +426,7 @@
+ 				p->count = PRINTER_BUF - 1;
+ 			printer_dump(p, True, True);
+ 		} else {
+-			popup_an_error(exitmsg);
++			popup_an_error("%s", exitmsg);
+ 		}
+ 		printer_stop();
+ 		return;
+diff -Naur --exclude '*~' c3270-3.3/rpq.c c3270-3.3-fix-format-errors/rpq.c
+--- c3270-3.3/rpq.c	2007-02-17 23:44:51.000000000 +0100
++++ c3270-3.3-fix-format-errors/rpq.c	2009-03-16 23:36:24.000000000 +0100
+@@ -732,7 +732,7 @@
+ {
+ 	/* If there's something to complain about, only complain once. */
+ 	if (!rpq_complained && rpq_wbcnt) {
+-		popup_an_error(rpq_warnbuf);
++		popup_an_error("%s", rpq_warnbuf);
+ 		rpq_wbcnt = 0;
+ 		rpq_complained = True;
+ 
+diff -Naur --exclude '*~' c3270-3.3/telnet.c c3270-3.3-fix-format-errors/telnet.c
+--- c3270-3.3/telnet.c	2007-06-19 15:59:05.000000000 +0200
++++ c3270-3.3-fix-format-errors/telnet.c	2009-03-16 23:40:45.000000000 +0100
+@@ -405,7 +405,7 @@
+ 	 va_start(args, fmt);
+ 	 vsprintf(buffer, fmt, args);
+ 	 va_end(args);
+-	 popup_an_errno(errno, buffer);
++	 popup_an_errno(errno, "%s", buffer);
+ }
+ #endif /*]*/
+ 
+@@ -1241,7 +1241,7 @@
+ 				trace_dsn(" ...\n... ");
+ 				ansi_data = 4 + sl;
+ 			}
+-			trace_dsn(see_chr);
++			trace_dsn("%s", see_chr);
+ 			if (!syncing) {
+ 				if (linemode && appres.onlcr && c == '\n')
+ 					ansi_process((unsigned int) '\r');
+@@ -1271,7 +1271,7 @@
+ 					trace_dsn(" ...\n ...");
+ 					ansi_data = 4 + sl;
+ 				}
+-				trace_dsn(see_chr);
++				trace_dsn("%s", see_chr);
+ 				ansi_process((unsigned int) c);
+ 				sms_store(c);
+ #endif /*]*/
+diff -Naur --exclude '*~' c3270-3.3/trace_ds.c c3270-3.3-fix-format-errors/trace_ds.c
+--- c3270-3.3/trace_ds.c	2007-06-23 21:31:45.000000000 +0200
++++ c3270-3.3-fix-format-errors/trace_ds.c	2009-03-16 23:43:46.000000000 +0100
+@@ -648,7 +648,7 @@
+ 			else
+ 				tracef = fopen(tfn, tracef_max? "w+": "a");
+ 			if (tracef == (FILE *)NULL) {
+-				popup_an_errno(errno, tfn);
++				popup_an_errno(errno, "%s", tfn);
+ #if defined(X3270_DISPLAY) /*[*/
+ 				fclose(tracef_pipe);
+ 				(void) close(pipefd[0]);
+@@ -932,7 +932,7 @@
+ 	tfn = do_subst(tfn, True, True);
+ 	screentracef = fopen(tfn, "a");
+ 	if (screentracef == (FILE *)NULL) {
+-		popup_an_errno(errno, tfn);
++		popup_an_errno(errno, "%s", tfn);
+ 		Free(tfn);
+ 		return False;
+ 	}
