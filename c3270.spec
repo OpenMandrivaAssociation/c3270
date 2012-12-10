@@ -45,3 +45,84 @@ install -m644 %{name}.man %{buildroot}%{_mandir}/man1/%{name}.1
 %{_sysconfdir}/x3270/ibm_hosts
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}*
+
+
+%changelog
+* Sun Dec 05 2010 Oden Eriksson <oeriksson@mandriva.com> 3.3.9ga12-4mdv2011.0
++ Revision: 610091
+- rebuild
+
+* Mon Apr 12 2010 Funda Wang <fwang@mandriva.org> 3.3.9ga12-3mdv2010.1
++ Revision: 533667
+- rebuild for openssl 1.0
+
+* Wed Aug 12 2009 Funda Wang <fwang@mandriva.org> 3.3.9ga12-2mdv2010.0
++ Revision: 415334
+- fix file list
+
+* Wed Aug 12 2009 Funda Wang <fwang@mandriva.org> 3.3.9ga12-1mdv2010.0
++ Revision: 415324
+- New version 3.3.9ga12
+
+* Mon Mar 16 2009 Guillaume Rousse <guillomovitch@mandriva.org> 3.3.6-4mdv2009.1
++ Revision: 356293
+- fix format errors
+
+* Wed Jul 23 2008 Thierry Vignaud <tv@mandriva.org> 3.3.6-3mdv2009.0
++ Revision: 243396
+- rebuild
+
+* Wed Jan 02 2008 Olivier Blin <oblin@mandriva.com> 3.3.6-1mdv2008.1
++ Revision: 140691
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+    - buildrequires X11-devel instead of XFree86-devel
+
+* Wed Jun 27 2007 Funda Wang <fwang@mandriva.org> 3.3.6-1mdv2008.0
++ Revision: 44857
+- New version
+- Import c3270
+
+
+
+* Tue Aug 01 2006 Lenny Cartier <lenny@mandriva.com> 3.3.2p2-4mdv2007.0
+- rebuild
+
+* Wed Nov 30 2005 Oden Eriksson <oeriksson@mandriva.com> 3.3.2p2-3mdk
+- rebuilt against openssl-0.9.8a
+
+* Fri Feb  4 2005 Oden Eriksson <oeriksson@mandrakesoft.com> 3.3.2p2-2mdk
+- rebuilt against new readline
+
+* Thu Jul 22 2004 Arnaud de Lorbeau <adelorbeau@mandrakesoft.com> 3.3.2p2-1mdk
+- new version
+
+* Tue Jun 08 2004 Oden Eriksson <oeriksson@mandrakesoft.com> 3.3.2p1-1mdk
+- new version
+- fix strange perms
+- fix deps
+
+* Fri Jul 11 2003 Oden Eriksson <oden.eriksson@kvikkjokk.net> 3.2.20-1mdk
+- 3.2.20
+- use the %%configure2_5x macro
+
+* Mon Jan 27 2003 Oden Eriksson <oden.eriksson@kvikkjokk.net> 3.2.19-3mdk
+- build release
+- misc spec file fixes
+
+* Wed Jul 24 2002 Thierry Vignaud <tvignaud@mandrakesoft.com> 3.2.19-2mdk
+- rebuild for new readline
+
+* Thu May 16 2002 Oden Eriksson <oden.eriksson@kvikkjokk.net> 3.2.19-1mdk
+- new version
+- misc spec file fixes
+- rebuilt with latest system compiler (gcc3.1)
+
+* Tue Jan  1 2002 Oden Eriksson <oden.eriksson@kvikkjokk.net> 3.2.18-1mdk
+- new version
+
+* Mon Sep 24 2001 Lenny Cartier <lenny@mandrakesoft.com> 3.2.17-1mdk
+- added in contribs by Oden Eriksson <oden.eriksson@kvikkjokk.net> :
+	- initial cooker contrib
