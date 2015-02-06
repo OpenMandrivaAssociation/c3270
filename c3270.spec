@@ -1,7 +1,7 @@
 Summary:	Curses-based 3270 Emulator
 Name:		c3270
 Version:	3.3.9ga12
-Release: 	%mkrel 4
+Release: 	5
 License:	GPL
 Group:		Terminals
 URL:		http://www.geocities.com/SiliconValley/Peaks/7814/
