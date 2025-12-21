@@ -9,6 +9,11 @@ Source0:	http://downloads.sourceforge.net/project/x3270/x3270/%version/suite3270
 Patch:		c3270-3.3-fix-format-errors.patch
 Requires:	x3270 <= %{version}
 Requires:	readline
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	ncursesw-devel
 BuildRequires:	readline-devel
 BuildRequires:	openssl-devel
